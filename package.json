@@ -1,0 +1,14 @@
+{
+  "name": "ai-code-guard",
+  "version": "0.1.0",
+  "main": "src/review-pr.js",
+  "license": "MIT",
+  "scripts": {
+    "review-pr": "node src/review-pr.js"
+  },
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@actions/github": "^6.0.0"
+  }
+}
+
