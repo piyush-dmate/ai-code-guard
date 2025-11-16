@@ -23,6 +23,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Debug step: check if OPENAI_API_KEY is visible
+      - name: Debug OPENAI_API_KEY presence
+        run: |
+          if [ -z "${OPENAI_API_KEY}" ]; then
+            echo "DEBUG: OPENAI_API_KEY is EMPTY in workflow";
+            exit 1;
+          else
+            echo "DEBUG: OPENAI_API_KEY is PRESENT (length > 0)";
+          fi
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
       - name: Run AI Code Guard
         run: npm run review-pr
         env:
