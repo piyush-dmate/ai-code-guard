@@ -20,15 +20,27 @@ async function getAiReview(prompt) {
         {
           role: "system",
           content:
-            "You are a senior application security engineer reviewing code in a pull request. " +
-            "Focus ONLY on security risks, insecure patterns, and missing safeguards. Be concise and practical."
+            [
+              "You are a senior application security engineer reviewing a GitHub pull request.",
+              "You are given ONLY a unified diff of the changes.",
+              "",
+              "STRICT RULES:",
+              "1. You MUST only report issues that are directly visible in the diff. Do NOT invent files, functions, or behavior.",
+              "2. For every issue you report, reference the specific file or code snippet from the diff.",
+              "3. If you do not see a clear security issue, you MUST say: 'No significant security issues were found in these changes.'",
+              "4. Focus ONLY on security (auth/authz, injection, data exposure, secrets leakage, insecure crypto, dangerous config, etc). Ignore style, performance, or general code quality.",
+              "5. Do NOT treat the mere presence of environment variables or secrets as a vulnerability.",
+              "   Only flag them if the diff shows them being logged, echoed, hard-coded, sent to the client, or otherwise exposed.",
+              "6. Do NOT speculate about hypothetical login flows, users, or inputs if they are not in the diff.",
+              ""
+            ].join("\n")
         },
         {
           role: "user",
           content: prompt
         }
       ],
-      temperature: 0.2
+      temperature: 0.1
     })
   });
 
@@ -101,13 +113,26 @@ async function run() {
     }
 
     const prompt =
-      "Review the following code changes for SECURITY issues only.\n" +
-      "- Provide a short title\n" +
-      "- Explain why it is risky\n" +
-      "- Suggest how to fix it\n\n" +
-      "If there are no major issues, say that explicitly.\n\n" +
-      "Here are the diffs:\n" +
-      diffText;
+      [
+        "Review the following code changes for SECURITY issues only.",
+        "",
+        "Output format:",
+        "1. A short, numbered list of concrete security findings.",
+        "2. For each finding include:",
+        "   - A short title",
+        "   - The file name and a brief snippet or description of the relevant code",
+        "   - Why it is risky",
+        "   - A practical suggestion to fix it",
+        "",
+        "Important:",
+        "- Do NOT include issues that are not clearly visible in the diff.",
+        "- Do NOT invent functions (for example, a 'login' function) if they are not shown.",
+        "- If you do not see any meaningful security issues, say exactly:",
+        "  'No significant security issues were found in these changes.'",
+        "",
+        "Here are the diffs:",
+        diffText
+      ].join("\n");
 
     const aiAnalysis = await getAiReview(prompt);
 
