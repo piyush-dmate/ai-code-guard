@@ -2,42 +2,38 @@
 Lightweight AI-Powered Security Reviews for GitHub Pull Requests
 
 AI Code Guard is a simple, developer-friendly GitHub Action that automatically reviews pull requests for common security issues.
-It analyzes only the PR diff and posts a clear, actionable security comment — just like a senior application security engineer.
-
-No setup. No heavy scanners. No noise.
-
-**🚀 Features**
-
-🔐 Security-focused AI code review
-
-No style comments. No nitpicks. Only real security findings.
-
-🧠 Detects common vulnerability patterns
-
-Hard-coded secrets
-
-Insecure authentication / authorization
-
-SQL injection-style patterns
-
-XSS-prone cookie usage
-
-Open redirect behavior
-
-Sensitive data logging
-
-Missing input validation
-
-Unsafe error handling
-
-Insecure headers / missing TLS
-
-Basic API misuse patterns
-
-And more…
+It analyzes only the PR diff and posts a clear, actionable security comment.
 
 
-**📦 Installation**
+**Features**
+Security-focused AI code review. No style comments. No nitpicks. Only real security findings.
+
+Detects common vulnerability patterns
+
+- Hard-coded secrets
+
+- Insecure authentication / authorization
+
+- SQL injection-style patterns
+
+- XSS-prone cookie usage
+
+- Open redirect behavior
+
+- Sensitive data logging
+
+- Missing input validation
+
+- Unsafe error handling
+
+- Insecure headers / missing TLS
+
+- Basic API misuse patterns
+
+- And more…
+
+
+**Installation**
 
 In your repository, create the file:
 
@@ -46,6 +42,7 @@ In your repository, create the file:
 
 Add the following:
 
+```yaml
 name: AI Code Guard
 
 on:
@@ -73,7 +70,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run review-pr
 
-
+```
 Add your repository secrets in GitHub:
 
 OPENAI_API_KEY → from OpenAI dashboard
@@ -81,27 +78,28 @@ OPENAI_API_KEY → from OpenAI dashboard
 GITHUB_TOKEN → already provided by GitHub (no action needed)
 
 
-🔧 Usage
+**Usage**
 
 Once the workflow is installed:
 
-Every PR triggers an automated security review
+- Every PR triggers an automated security review
 
-Only the changed lines are analyzed
+- Only the changed lines are analyzed
+- The bot posts a single clean comment with:
 
-The bot posts a single clean comment with:
+   Title
 
-Title
+   Risks
 
-Risks
+   File-specific findings
 
-File-specific findings
+   Fix suggestions
 
-Fix suggestions
+- Nothing blocks merges unless you configure branch protection.
 
-Nothing blocks merges unless you configure branch protection.
 
-🛡 Example Output
+**Example Output**
+```yaml
 🔐 AI Code Guard Security Review
 
 1. Hard-coded Secrets
@@ -114,43 +112,31 @@ File: login.js
 Risk: Printing user passwords into logs.
 Fix: Remove password field or mask it.
 
-🧩 How It Works
+```
 
-GitHub Action extracts PR diffs
+**How It Works**
 
-Sends changes (safely truncated) to the AI model
+- GitHub Action extracts PR diffs
 
-AI analyzes code for real-world security issues
+- Sends changes (safely truncated) to the AI model
 
-A structured comment is posted to the PR
+- AI analyzes code for real-world security issues
+
+- A structured comment is posted to the PR
 
 No infrastructure or backend needed
 
-🎯 Why Use AI Code Guard?
-
-Developer-first approach
-
-No false positives from large scanners
-
-No need for dedicated AppSec engineers
-
-Extremely fast feedback
-
-Real, contextual fix suggestions
-
-Works with any language or framework
-
-🤝 Contributing
+**Contributing**
 
 Issues and pull requests are welcome!
 Feel free to:
 
-Suggest new vulnerability checks
+- Suggest new vulnerability checks
 
-Improve prompt logic
+- Improve prompt logic
 
-Add language-specific security patterns
+- Add language-specific security patterns
 
-📄 License
+**License**
 
 MIT License. Free to use and modify.
